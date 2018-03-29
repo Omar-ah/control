@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context="goods.mine.com.control.ui.MainActivity">
 
-    <View
+    <goods.mine.com.control.ui.TouchPad
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
