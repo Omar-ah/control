@@ -58,7 +58,7 @@ public class TouchPad extends View {
     /**
      * the max number of supported pointers in a click detection
      */
-    private static final int MAX_NUM_SUPPORTED_POINTERS = 3  ;
+    private static final int MAX_NUM_SUPPORTED_POINTERS = 5  ;
 
     /**
      * holds the last updated location value i.e x  , y
@@ -105,7 +105,7 @@ public class TouchPad extends View {
     /**
      * just as the name suggests
      */
-    private static final int MAX_ACTION_MOVE_COUNT_TO_CLICK = 30 ;
+    private static final int MAX_ACTION_MOVE_COUNT_TO_CLICK = 50 ;
 
     /**
      * the number of received events with {@link android.view.MotionEvent#ACTION_MOVE} action
@@ -125,7 +125,7 @@ public class TouchPad extends View {
      *
      * TODO : fix this value so it adapt to different screen use dp
      */
-    private final float MAX_FIXED_TRANSLATION  =  5f;
+    private final float MAX_FIXED_TRANSLATION  =  15f;
 
     /**
      * holds the number of pointers that were down since {@link android.view.MotionEvent#ACTION_DOWN}
