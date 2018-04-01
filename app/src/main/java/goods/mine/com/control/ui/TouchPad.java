@@ -8,19 +8,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import goods.mine.com.control.processor.ClickProcessor;
+
 
 public class TouchPad extends View {
 
     private static final String TAG = TouchPad.class.getSimpleName() ;
 
+    ClickProcessor clickProcessor  ;
+
     public TouchPad(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        snapShots = new PointersSnapShot[MAX_NUM_SUPPORTED_POINTERS] ;
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS ; i++ ) {
-            snapShots[i] = new PointersSnapShot() ;
-            snapShots[i].clear();
-        }
+        clickProcessor = new ClickProcessor() ;
     }
 
     @Override
@@ -30,11 +29,31 @@ public class TouchPad extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int result = getClickPointerCount(event ) ;
-        if (result == 1 ) performClick() ;
-//        printSamples(event);
-        if (result != 0){
-            Toast.makeText(getContext() , "result " + result , Toast.LENGTH_SHORT).show();
+//        switch (event.getActionMasked() ) {
+//            case MotionEvent.ACTION_POINTER_DOWN : {
+//                Log.e(TAG , "ACTION_POINTER_DOWN : " + event.getPointerId(event.getActionIndex())) ;
+//                break;
+//            }
+//            case MotionEvent.ACTION_POINTER_UP : {
+//                Log.e(TAG , "ACTION_POINTER_UP : " + event.getPointerId(event.getActionIndex())) ;
+//                break;
+//            }
+//            case MotionEvent.ACTION_DOWN : {
+//                Log.e(TAG , "ACTION_DOWN : " + event.getPointerId(event.getActionIndex())) ;
+//                break;
+//            }
+//            case MotionEvent.ACTION_UP : {
+//                Log.e(TAG , "ACTION_UP : " + event.getPointerId(event.getActionIndex())) ;
+//                break;
+//            }
+//            case MotionEvent.ACTION_MOVE: {
+//                Log.e(TAG , "ACTION_MOVE : " + event.getPointerId(event.getActionIndex())) ;
+//                break;
+//            }
+//        }
+        int result ;
+        if ((result = clickProcessor.getClickCount(event)) != 0 ) {
+            Toast.makeText(getContext(), "result is " + result , Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -55,153 +74,4 @@ public class TouchPad extends View {
         }
     }
 
-    /**
-     * the max number of supported pointers in a click detection
-     */
-    private static final int MAX_NUM_SUPPORTED_POINTERS = 5  ;
-
-    /**
-     * holds the last updated location value i.e x  , y
-     * for all pointers that were down since the {@link android.view.MotionEvent#ACTION_DOWN}
-     */
-    private PointersSnapShot[] snapShots  ;
-
-    private boolean $hasId(int id) {
-        for (int i= 0 ; i< MAX_NUM_SUPPORTED_POINTERS ; i++ ){
-            if (snapShots[i].id == id) return true ;
-        }
-        return false ;
-    }
-
-    private boolean $addId(int id , float x , float  y) {
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS ; i++) {
-            if (snapShots[i].id == -1){
-                snapShots[i].set(id , x ,y);
-                return true ;
-            }
-        }
-        return false ;
-    }
-
-    private int getIndexFor(int id) {
-        for (int i= 0 ; i< MAX_NUM_SUPPORTED_POINTERS ; i++ ){
-            if (snapShots[i].id == id) return  i ;
-        }
-        return -1 ;
-    }
-
-    private boolean check (int id , float x , float y  ) {
-        int index = getIndexFor(id) ;
-        return (Math.abs(x - snapShots[index].x) < MAX_FIXED_TRANSLATION) &&
-                (Math.abs(y - snapShots[index].y) < MAX_FIXED_TRANSLATION);
-    }
-
-    private void clearSnapShots() {
-        for (PointersSnapShot p : snapShots ) {
-            p.clear();
-        }
-    }
-
-    /**
-     * just as the name suggests
-     */
-    private static final int MAX_ACTION_MOVE_COUNT_TO_CLICK = 50 ;
-
-    /**
-     * the number of received events with {@link android.view.MotionEvent#ACTION_MOVE} action
-     * that occurred in series
-     */
-    private int nOstaticMoveActionsInRow = 0 ;
-
-    /**
-     * this boolean holds true when receiving  {@link android.view.MotionEvent#ACTION_DOWN}
-     * and subsequent fixed {@link android.view.MotionEvent#ACTION_MOVE}
-     */
-    private boolean straightFixedDown;
-
-    /**
-     * the maximum translation in either direction -x and y that we still consider the pointer to
-     * be fixed
-     *
-     * TODO : fix this value so it adapt to different screen use dp
-     */
-    private final float MAX_FIXED_TRANSLATION  =  15f;
-
-    /**
-     * holds the number of pointers that were down since {@link android.view.MotionEvent#ACTION_DOWN}
-     * this variable just goes up with every new pointer and cleared on action up or down
-     */
-    private int activatedPointers ;
-
-    /**
-     * this method detects single , double , triple click events
-     * @param event the series of events (one at a time) that this method detects
-     * @return the count of pointers that clicked (0 -> {@link #MAX_NUM_SUPPORTED_POINTERS})
-     * or 0 if no click was detected
-     *
-     * are all fixed && straight in series && don't exceed the number of events allowed
-     */
-    private int getClickPointerCount(MotionEvent event ) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                clearSnapShots();
-                straightFixedDown = true ;
-                nOstaticMoveActionsInRow = 0 ;
-                //it's not actually zero but this pointer will be added later
-                activatedPointers = 0 ;
-                break ;
-            case MotionEvent.ACTION_MOVE :
-                if (!straightFixedDown) return 0 ;
-                boolean areAllFixed = true ;
-                int pointerCount = event.getPointerCount() ;
-                for (int i = 0 ; i<pointerCount ; i++ ) {
-                    int pointerId = event.getPointerId(i) ;
-                    if ($hasId(pointerId)){
-                        boolean checkRes = check(pointerId , event.getX(i) , event.getY(i));
-                        areAllFixed = areAllFixed & checkRes ;
-                        if (!checkRes) {
-                            straightFixedDown = false ;
-                        }
-                    }else {
-                        if ($addId(pointerId , event.getX(i) , event.getY(i))) {
-                            activatedPointers++ ;
-                        }else{
-                            //doing this as a way of canceling the detection
-                            straightFixedDown = false ;
-                        }
-                    }
-                }
-                if (areAllFixed) nOstaticMoveActionsInRow++ ;
-                break ;
-            case MotionEvent.ACTION_UP :
-                if (straightFixedDown && nOstaticMoveActionsInRow < MAX_ACTION_MOVE_COUNT_TO_CLICK) {
-                    return  activatedPointers ;
-                }
-                break ;
-
-        }
-        return  0 ;
-    }
-
-    /**
-     * holds location information mapped by id for a specific pointer
-     */
-    private static class PointersSnapShot{
-        float x  ;
-        float y  ;
-        int   id ;
-
-        void update(float x , float y) {
-            this.x= x ;
-            this.y = y ;
-        }
-
-        void  set(int id , float x , float y ) {
-            update(x, y ) ;
-            this.id = id ;
-        }
-        void clear() {
-            x = y = id = -1 ;
-        }
-    }
 }
