@@ -1,4 +1,4 @@
-package goods.mine.com.control.processor;
+package goods.mine.com.control.processors;
 
 
 import android.view.MotionEvent;
@@ -8,18 +8,7 @@ public class ClickProcessor {
     /**
      * the max number of supported pointers in a click detection
      */
-    private static final int MAX_NUM_SUPPORTED_POINTERS = 5  ;
-
-    /**
-     * just as the name suggests
-     */
-    private static final int MAX_ACTION_MOVE_COUNT_TO_CLICK = 50 ;
-
-    /**
-     * the number of received events with {@link android.view.MotionEvent#ACTION_MOVE} action
-     * that occurred in series
-     */
-    private int nOstaticMoveActionsInRow = 0 ;
+    private static final int MAX_NUM_SUPPORTED_POINTERS = 3  ;
 
     /**
      * this boolean holds true when receiving  {@link android.view.MotionEvent#ACTION_DOWN}
@@ -31,7 +20,7 @@ public class ClickProcessor {
      * the maximum translation in either direction -x and y that we still consider the pointer to
      * be fixed
      *
-     * TODO : fix this value so it adapt to different screen use dp
+     * TODO : fix this value so that it adapts to different screens .use dp
      */
     private final float MAX_FIXED_TRANSLATION  =  15f;
 
@@ -41,13 +30,23 @@ public class ClickProcessor {
      */
     private int activatedPointers ;
 
+    /**
+     * represent when the current gesture began it is set every time we got {@link android.view.MotionEvent#ACTION_DOWN}
+     */
+    private long startTime  ;
+
+    /**
+     * how long the gesture is considered to be a possible click
+     */
+    private static final long TIME_INTERVAL = 350;
+
 
     public int getClickCount(MotionEvent event ) {
         switch (event.getActionMasked() ) {
             case MotionEvent.ACTION_DOWN :
                 activatedPointers = 1 ;
                 straightFixedDown = true ;
-                nOstaticMoveActionsInRow = 0 ;
+                startTime = System.currentTimeMillis() ;
                 return 0  ;
 
             case MotionEvent.ACTION_POINTER_DOWN :
@@ -60,13 +59,12 @@ public class ClickProcessor {
 
             case MotionEvent.ACTION_MOVE :
                 if (!straightFixedDown) return 0;
-                if (straightFixedDown = checkIfAllStatic(event) ) {
-                    nOstaticMoveActionsInRow++ ;
-                }
+                straightFixedDown = checkIfAllStatic(event) ;
                 return 0  ;
 
             case MotionEvent.ACTION_UP :
-                if (straightFixedDown && nOstaticMoveActionsInRow < MAX_ACTION_MOVE_COUNT_TO_CLICK) {
+                if (straightFixedDown &&
+                        System.currentTimeMillis() - startTime < TIME_INTERVAL) {
                     return  activatedPointers ;
                 }
                 return 0  ;
