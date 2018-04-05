@@ -19,10 +19,12 @@ public class ClickProcessor {
     /**
      * the maximum translation in either direction -x and y that we still consider the pointer to
      * be fixed
-     *
-     * TODO : fix this value so that it adapts to different screens .use dp
-     */
-    private final float MAX_FIXED_TRANSLATION  =  15f;
+     **/
+    private float MAX_FIXED_TRANSLATION  ;
+
+    public void setMAX_FIXED_TRANSLATION (float max_fixed_translation) {
+        MAX_FIXED_TRANSLATION = max_fixed_translation ;
+    }
 
     /**
      * holds the number of pointers that were down since {@link android.view.MotionEvent#ACTION_DOWN}
@@ -38,7 +40,7 @@ public class ClickProcessor {
     /**
      * how long the gesture is considered to be a possible click
      */
-    private static final long TIME_INTERVAL = 350;
+    private static final long TIME_INTERVAL = 250;
 
 
     public int getClickCount(MotionEvent event ) {
