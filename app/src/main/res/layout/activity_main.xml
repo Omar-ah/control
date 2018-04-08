@@ -12,35 +12,36 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:id="@+id/touch_pad"/>
+        android:id="@+id/touch_pad"
+        android:background="#333333"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@android:color/black"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:background="@android:color/black"/>-->
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/left_button" />
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1">-->
+        <!--<View-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:id="@+id/left_button" />-->
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/black"/>
+        <!--<View-->
+            <!--android:layout_width="2dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@android:color/black"/>-->
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/right_button" />
+        <!--<View-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:id="@+id/right_button" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 </LinearLayout>

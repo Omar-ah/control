@@ -8,7 +8,7 @@ public class ClickProcessor {
     /**
      * the max number of supported pointers in a click detection
      */
-    private static final int MAX_NUM_SUPPORTED_POINTERS = 3  ;
+    static final int MAX_NUM_SUPPORTED_POINTERS = 3  ;
 
     /**
      * this boolean holds true when receiving  {@link android.view.MotionEvent#ACTION_DOWN}
