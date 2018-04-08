@@ -1,6 +1,9 @@
 package goods.mine.com.control.processors;
 
 import android.view.MotionEvent;
+
+import goods.mine.com.control.network.Connection;
+
 import static goods.mine.com.control.processors.ClickProcessor.MAX_NUM_SUPPORTED_POINTERS ;
 
 public class DragProcessor {

@@ -3,13 +3,12 @@ package goods.mine.com.control.ui;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
 import goods.mine.com.control.processors.ClickProcessor;
-import goods.mine.com.control.processors.Connection;
+import goods.mine.com.control.network.Connection;
 import goods.mine.com.control.processors.DragProcessor;
 
 
