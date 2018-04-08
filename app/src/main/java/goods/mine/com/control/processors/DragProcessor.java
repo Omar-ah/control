@@ -10,37 +10,29 @@ public class DragProcessor {
 
     private class PointerLocation {
         float x , y ;
-        int id ;
+        boolean set  ;
     }
 
     private PointerLocation[] pointerSnapShot = new PointerLocation[MAX_NUM_SUPPORTED_POINTERS] ;
 
     private void clearPointerSnapShot () {
         for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS; i++) {
-            pointerSnapShot[i].id = -1;
+            pointerSnapShot[i].set = false;
         }
     }
 
     private void add(MotionEvent event , int index) {
         int id =  event.getPointerId(index) ;
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS; i++) {
-            if (pointerSnapShot[i].id == -1) {
-                pointerSnapShot[i].id = id ;
-                pointerSnapShot[i].x = event.getX(index) ;
-                pointerSnapShot[i].y = event.getY(index) ;
-                break ;
-            }
-        }
+        if (id > MAX_NUM_SUPPORTED_POINTERS) return;
+        pointerSnapShot[id].set = true ;
+        pointerSnapShot[id].x = event.getX(index) ;
+        pointerSnapShot[id].y = event.getY(index) ;
     }
 
     private void remove(MotionEvent event , int index) {
         int id =  event.getPointerId(index) ;
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS; i++) {
-            if (pointerSnapShot[i].id == id) {
-                pointerSnapShot[i].id = -1 ;
-                break;
-            }
-        }
+        if (id > MAX_NUM_SUPPORTED_POINTERS) return;
+        pointerSnapShot[id].set = false ;
     }
 
     public DragProcessor(){
@@ -83,22 +75,14 @@ public class DragProcessor {
     }
 
     private void updateRecord(int id  ,float x , float y) {
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS ; i++ ){
-            if (pointerSnapShot[i].id == id) {
-                pointerSnapShot[i].x = x ;
-                pointerSnapShot[i].y = y ;
-                return ;
-            }
-        }
+        if (id > MAX_NUM_SUPPORTED_POINTERS) return ;
+        pointerSnapShot[id].x = x ;
+        pointerSnapShot[id].y = y ;
     }
 
     private float getLastY(int id ) {
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS; i++) {
-            if (pointerSnapShot[i].id == id ) {
-                return pointerSnapShot[i].y ;
-            }
-        }
-        return 0f ;
+        if (id > MAX_NUM_SUPPORTED_POINTERS) return 0f ;
+        return pointerSnapShot[id].y ;
     }
 
     private float getMaxXTranslation(MotionEvent event) {
@@ -111,12 +95,8 @@ public class DragProcessor {
     }
 
     private float getLastX(int id) {
-        for (int i = 0 ; i<MAX_NUM_SUPPORTED_POINTERS; i++) {
-            if (pointerSnapShot[i].id == id ) {
-                return pointerSnapShot[i].x ;
-            }
-        }
-        return 0f ;
+        if (id > MAX_NUM_SUPPORTED_POINTERS) return 0f ;
+        return pointerSnapShot[id].x ;
     }
 
     private float getMaxYTranslation(MotionEvent event) {
