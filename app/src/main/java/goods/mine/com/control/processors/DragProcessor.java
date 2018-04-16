@@ -26,7 +26,7 @@ public class DragProcessor {
 
     private void add(MotionEvent event , int index) {
         int id =  event.getPointerId(index) ;
-        if (id > MAX_NUM_SUPPORTED_POINTERS) return;
+        if (id >= MAX_NUM_SUPPORTED_POINTERS) return;
         pointerSnapShot[id].set = true ;
         pointerSnapShot[id].x = event.getX(index) ;
         pointerSnapShot[id].y = event.getY(index) ;
@@ -34,7 +34,7 @@ public class DragProcessor {
 
     private void remove(MotionEvent event , int index) {
         int id =  event.getPointerId(index) ;
-        if (id > MAX_NUM_SUPPORTED_POINTERS) return;
+        if (id >= MAX_NUM_SUPPORTED_POINTERS) return;
         pointerSnapShot[id].set = false ;
     }
 
@@ -78,13 +78,13 @@ public class DragProcessor {
     }
 
     private void updateRecord(int id  ,float x , float y) {
-        if (id > MAX_NUM_SUPPORTED_POINTERS) return ;
+        if (id >= MAX_NUM_SUPPORTED_POINTERS) return ;
         pointerSnapShot[id].x = x ;
         pointerSnapShot[id].y = y ;
     }
 
     private float getLastY(int id ) {
-        if (id > MAX_NUM_SUPPORTED_POINTERS) return 0f ;
+        if (id >= MAX_NUM_SUPPORTED_POINTERS) return 0f ;
         return pointerSnapShot[id].y ;
     }
 
@@ -98,7 +98,7 @@ public class DragProcessor {
     }
 
     private float getLastX(int id) {
-        if (id > MAX_NUM_SUPPORTED_POINTERS) return 0f ;
+        if (id >= MAX_NUM_SUPPORTED_POINTERS) return 0f ;
         return pointerSnapShot[id].x ;
     }
 

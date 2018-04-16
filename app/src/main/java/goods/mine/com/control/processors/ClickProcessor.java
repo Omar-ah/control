@@ -1,7 +1,10 @@
 package goods.mine.com.control.processors;
 
 
+import android.util.Log;
 import android.view.MotionEvent;
+
+import goods.mine.com.control.network.Connection;
 
 public class ClickProcessor {
 
@@ -45,13 +48,9 @@ public class ClickProcessor {
 
     public int getClickCount(MotionEvent event ) {
         switch (event.getActionMasked() ) {
-            case MotionEvent.ACTION_DOWN :
-                activatedPointers = 1 ;
-                straightFixedDown = true ;
-                startTime = System.currentTimeMillis() ;
-                return 0  ;
 
             case MotionEvent.ACTION_POINTER_DOWN :
+                Connection.postValues(501 , 0f , 0f ) ;
                 activatedPointers++ ;
                 if (activatedPointers > MAX_NUM_SUPPORTED_POINTERS) {
                     //doing this as a way of aborting the gesture not that it is not straightFixedDown
@@ -59,17 +58,32 @@ public class ClickProcessor {
                 }
                 return 0  ;
 
+            case MotionEvent.ACTION_DOWN :
+                Connection.postValues(500 , 0f , 0f ) ;
+                activatedPointers = 1 ;
+                straightFixedDown = true ;
+                startTime = System.currentTimeMillis() ;
+                return 0  ;
+
+
             case MotionEvent.ACTION_MOVE :
                 if (!straightFixedDown) return 0;
                 straightFixedDown = checkIfAllStatic(event) ;
                 return 0  ;
 
-            case MotionEvent.ACTION_UP :
+            case MotionEvent.ACTION_POINTER_UP :
+                Log.e("shift" , "actionpointerup");
+                Connection.postValues(503 , 0f , 0f ) ;
+                return 0 ;
+
+                case MotionEvent.ACTION_UP :
+                Connection.postValues(502 , 0f , 0f ) ;
                 if (straightFixedDown &&
                         System.currentTimeMillis() - startTime < TIME_INTERVAL) {
                     return  activatedPointers ;
                 }
                 return 0  ;
+
 
             default: return 0 ;
 
