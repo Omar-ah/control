@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.net.InetAddress;
@@ -33,6 +34,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.HostViewHold
     public void onBindViewHolder(@NonNull HostViewHolder holder, int position) {
         holder.hostAddress.setText(addresses.get(position).getHostAddress());
         holder.hostName.setText(addresses.get(position).getHostName());
+        holder.progressBar.setVisibility(View.INVISIBLE) ;
     }
 
     @Override
@@ -44,8 +46,10 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.HostViewHold
 
         TextView hostName ;
         TextView hostAddress ;
+        ProgressBar progressBar ;
         public HostViewHolder(View itemView) {
             super(itemView);
+            progressBar = itemView.findViewById(R.id.connect_progress) ;
             hostName = itemView.findViewById(R.id.host_name);
             hostAddress = itemView.findViewById(R.id.host_address) ;
         }
