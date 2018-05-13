@@ -152,7 +152,7 @@ public class Connection {
                         }
                     });
                 }
-            } , 1 , TimeUnit.SECONDS) ;
+            } , 300 , TimeUnit.MILLISECONDS) ;
             closingThread.shutdown();
 
         }
