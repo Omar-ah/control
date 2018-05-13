@@ -14,12 +14,6 @@ import goods.mine.com.control.processors.DragProcessor;
 
 public class TouchPad extends View {
 
-    private static final String TAG = TouchPad.class.getSimpleName();
-    public static final int SINGLE_TAB = 101 ;
-    public static final int DOUBLE_TAB = 102 ;
-    public static final int TRIPLE_TAB = 103 ;
-
-
     ClickProcessor clickProcessor;
     DragProcessor dragProcessor;
 
