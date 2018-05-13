@@ -32,7 +32,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.HostViewHold
 
     @Override
     public void onBindViewHolder(@NonNull HostViewHolder holder, int position) {
-        holder.hostAddress.setText(addresses.get(position).getHostAddress());
+//        holder.hostAddress.setText(addresses.get(position).getHostAddress());
         holder.hostName.setText(addresses.get(position).getHostName());
         holder.progressBar.setVisibility(View.INVISIBLE) ;
     }
@@ -45,13 +45,13 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.HostViewHold
     public static class HostViewHolder extends RecyclerView.ViewHolder{
 
         TextView hostName ;
-        TextView hostAddress ;
+//        TextView hostAddress ;
         ProgressBar progressBar ;
         public HostViewHolder(View itemView) {
             super(itemView);
             progressBar = itemView.findViewById(R.id.connect_progress) ;
             hostName = itemView.findViewById(R.id.host_name);
-            hostAddress = itemView.findViewById(R.id.host_address) ;
+//            hostAddress = itemView.findViewById(R.id.host_address) ;
         }
     }
 }
